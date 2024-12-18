@@ -9,7 +9,7 @@
     String message = null;
     String param = request.getParameter("p");
 
-    if ("out".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
+    if (param != null && "out".equals(param) && "POST".equals(request.getMethod())) {
         if (session != null) {
             session.invalidate();
         }

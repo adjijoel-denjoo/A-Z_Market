@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.produits-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.produit {
+    width: 30%;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Garantir que la description soit en bas */
+    height: 400px; /* Hauteur fixe pour chaque bloc de produit */
+}
+
+.produit img {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Limiter la hauteur de l'image */
+    object-fit: contain; /* Maintenir les proportions de l'image */
+    margin-bottom: 10px;
+}
+
+.disponible {
+    background-color: #c8e6c9;
+    padding: 5px;
+    color: #388e3c;
+    font-weight: bold;
+}
+
+.indisponible {
+    background-color: #ffcdd2;
+    padding: 5px;
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+.produit-info {
+    margin-top: auto; /* Aligner la description en bas */
+    font-size: 1.1em;
+}
+
+.cout-total {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 2em;
+    font-weight: bold;
+    color: #555;
+}
