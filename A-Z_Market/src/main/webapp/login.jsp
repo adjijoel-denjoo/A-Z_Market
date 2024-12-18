@@ -1,12 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, data_access.*" %>
+<%@ page import="jakarta.servlet.http.*" %>
 <%@ page import="org.mindrot.jbcrypt.BCrypt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
     String message = null;
-    if ("POST".equalsIgnoreCase(request.getMethod())) {
+    String param = request.getParameter("p");
+
+    if ("1".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
+        // Traitement de connexion
+        String email = request.getParameter("email");
+        String motDePasse = request.getParameter("motDePasse");
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBConnection.getConnection();
+            String sql = "SELECT `idUtilisateur`, `nomUtilisateur`, `motDePasseHache`, `role` FROM `utilisateurs` WHERE `email`=? ";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+               if (rs.next()) {
+                   String motDePasseHache = rs.getString("motDePasseHache");
+                   String role = rs.getString("role");
+                   int userId = rs.getInt("idUtilisateur");
+                   String nomUtilisateur = rs.getString("nomUtilisateur");
+
+                   if (BCrypt.checkpw(motDePasse, motDePasseHache)) {
+                       session.setAttribute("userId", userId);
+                       session.setAttribute("nomUtilisateur", nomUtilisateur);
+                       session.setAttribute("role", role);
+                       message = "Connecter";
+                     // Redirection en fonction des rôles
+                     switch (role.toLowerCase()) {
+                         case "administrateur":
+                             response.sendRedirect("job-views/dashboard/");
+                             break;
+                         case "client":
+                             response.sendRedirect("index.jsp");
+                             break;
+                         case "employe":
+                             String employeQuery = "SELECT poste FROM employes WHERE idUtilisateur = ?";
+                             try (PreparedStatement empStmt = con.prepareStatement(employeQuery)) {
+                                 empStmt.setInt(1, userId);
+                                 try (ResultSet empRs = empStmt.executeQuery()) {
+                                     if (empRs.next()) {
+                                         String poste = empRs.getString("poste").toLowerCase();
+                                         if (poste.contains("caisse")) response.sendRedirect("job-views/caisse/");
+                                         else if (poste.contains("stock")) response.sendRedirect("job-views/stock/");
+                                         else if (poste.contains("rh")) response.sendRedirect("job-views/rh/");
+                                         else response.sendRedirect("index.jsp");
+                                     } else response.sendRedirect("index.jsp");
+                                 }
+                             }
+                             break;
+                         default:
+                             response.sendRedirect("index.jsp");
+                        }
+                   } else {
+                       request.setAttribute("error", "Mot de passe incorrect !");
+                       request.getRequestDispatcher("login.jsp").forward(request, response);
+                   }
+               } else {
+                   request.setAttribute("error", "Aucun utilisateur trouvé avec cet email !");
+                   request.getRequestDispatcher("login.jsp").forward(request, response);
+               }
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = "Erreur" + e.getMessage();;
+           // response.sendRedirect("errorPage.jsp");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {}
+            if (pstmt != null) try { pstmt.close(); } catch (SQLException e) {}
+            if (con != null) try { con.close(); } catch (SQLException e) {}
+        }
+
+    } else if ("2".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
+        // Traitement d'inscription
         String nomUtilisateur = request.getParameter("nomUtilisateur");
         String email = request.getParameter("email");
         String motDePasse = request.getParameter("motDePasse");
@@ -16,8 +91,8 @@
             if (motDePasse.equals(confirmMotDePasse)) {
                 Connection con = null;
                 PreparedStatement pstmt = null;
+
                 try {
-                    // Hashage du mot de passe
                     String motDePasseHache = BCrypt.hashpw(motDePasse, BCrypt.gensalt());
                     con = DBConnection.getConnection();
                     String sql = "INSERT INTO utilisateurs (nomUtilisateur, email, motDePasseHache, dateCreation) VALUES (?, ?, ?, NOW())";
@@ -112,7 +187,7 @@
                 <% if (message != null) { %>
                     <div class="alert alert-info"><%= message %></div>
                 <% } %>
-                <form method="post" action="Login.java">
+                <form method="post" action="login.jsp?p=1">
                     <div class="mb-3">
                         <label for="loginEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="loginEmail" name="email" required>
@@ -132,7 +207,7 @@
             <div class="signup-form">
                 <h3 class="text-center mb-4">Inscription</h3>
 
-                <form method="post" action="login.jsp">
+                <form method="post" action="login.jsp?p=2">
                     <div class="mb-3">
                         <label for="nomUtilisateur" class="form-label">Nom d'utilisateur</label>
                         <input type="text" class="form-control" id="nomUtilisateur" name="nomUtilisateur" required>
