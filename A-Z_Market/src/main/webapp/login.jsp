@@ -9,7 +9,12 @@
     String message = null;
     String param = request.getParameter("p");
 
-    
+    if ("out".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
+        if (session != null) {
+            session.invalidate();
+        }
+        response.sendRedirect("login.jsp");
+    }
     
     if ("1".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
         // Traitement de connexion

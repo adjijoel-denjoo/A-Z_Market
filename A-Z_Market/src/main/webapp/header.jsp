@@ -96,7 +96,7 @@
 							</c:when>
 							<c:otherwise>
 							<li><a class="dropdown-item" href="profile.jsp">Profil</a></li>
-							<li><a class="dropdown-item" href="Login.jsp">Se D&#xE9;connecter</a></li>
+							<li><a class="dropdown-item" href="login.jsp?p=out">Se D&#xE9;connecter</a></li>
 							</c:otherwise>
 						</c:choose>
 

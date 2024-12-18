@@ -27,11 +27,7 @@ String title = "Profil " ;
         <div class="info-item">
             <strong>Date d'embauche :</strong>
             <%
-                // Formatage de la date pour un affichage lisible
-                Date dateEmbauche = (Date) session.getAttribute("dateEmbauche");
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             %>
-            <span><%= formatter.format(dateEmbauche) %></span>
         </div>
     </div>
 
