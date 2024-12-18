@@ -1,3 +1,5 @@
+<%@ page import="java.sql.*, data_access.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -69,13 +71,13 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container">
-            <a class="navbar-brand text-primary fw-bold" href="#"> <img src="logo0.png" width="50px" alt="" > A-Z Market</a>
+            <a class="navbar-brand text-primary fw-bold" href="index.jsp"> <img src="logo0.png" width="50px" alt="" > A-Z Market</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav ms-auto justify-content-center">
-                    <li class="nav-item"><a class="nav-link" href="#">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.jsp">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="categories.jsp">Cat&#xE9;gories</a></li>
                     <li class="nav-item"><a class="nav-link" href="deals.jsp">Le Deal</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.jsp">A propos</a></li>
@@ -84,16 +86,17 @@
 		
 				<div class="btn-group" role="group">
                     <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> <%= session.getAttribute("userName") != null ? session.getAttribute("userName") : "Visiteur" %>
+                        <i class="bi bi-person-circle"></i>${empty sessionScope.nomUtilisateur ? "Visiteur" : sessionScope.nomUtilisateur}
+
                     </button>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="profile.jsp">Profil</a></li>
 						<c:choose>
-							<c:when test="${empty sessionScope.userName}">
+							<c:when test="${empty sessionScope.nomUtilisateur}">
 								<li><a class="dropdown-item" href="login.jsp">Se Connecter</a></li>
 							</c:when>
-						<c:otherwise>
-							<li><a class="dropdown-item" href="logout.jsp">Se Déconnecter</a></li>
+							<c:otherwise>
+							<li><a class="dropdown-item" href="profile.jsp">Profil</a></li>
+							<li><a class="dropdown-item" href="Login.jsp">Se D&#xE9;connecter</a></li>
 							</c:otherwise>
 						</c:choose>
 

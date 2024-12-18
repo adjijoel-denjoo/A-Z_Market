@@ -8,16 +8,15 @@
         </div>
         <div class="col-lg-6 my-4 d-flex align-items-center">
           <div>
-            <h6>This map is embedded in a 6 column layout</h6>
-            <p>Try to resize your browser window - you will see that it starts to take up 12 columns on
-              screens smaller than 992px.</p>
-            <p>This useful feature helps to make your embedded map responsive (<strong>mobile
-                friendly</strong>). You can customize responsive behavior with the use of <a
-                href="https://mdbootstrap.com/docs/standard/layout/breakpoints/">breakpoints</a>.</p>
-            <p>This text looks so nice because it's <strong>vertically centered</strong> you can achieve
-              this effect using the <a
-                href="https://mdbootstrap.com/docs/standard/layout/vertical-alignment/">vertical
-                alignment</a> layout option.</p>
+                <h2>Un emplacement stratégique</h2>
+                <p>Notre supermarché est situé directement en face de l'entrée principale de l'<strong>ESATIC</strong>, sur la Rue des Gardes.</p>
+                <ul>
+                    <li>Traversez simplement la route principale depuis l'ESATIC.</li>
+                    <li>Nous sommes proches de <strong>GENIE MARITIME ET SERVICES</strong> et <strong>EMSP École Multinationale</strong>.</li>
+                     <li>Accessible depuis la Rue des Gardes, une voie bien connue dans le quartier.</li>
+                    <li>Repérez notre grande enseigne visible depuis l'école !</li>
+                   
+                </ul>
           </div>
         </div>
       </div>
@@ -93,7 +92,7 @@
             <div class="row mt-3">
                 <div class="col text-center">
                     <p class="mb-0">&copy; 2024 A-Z Market. Tous droits réservés.</p>
-                    <small>Développé avec <i class="bi bi-heart-fill text-danger"></i> par l'équipe A-Z Market.</small>
+                    <small>Développé avec <i class="bi bi-heart-fill text-danger"></i> par le Groupe BAYA.</small>
                 </div>
             </div>
         </div>

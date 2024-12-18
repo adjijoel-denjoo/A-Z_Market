@@ -9,6 +9,8 @@
     String message = null;
     String param = request.getParameter("p");
 
+    
+    
     if ("1".equals(param) && "POST".equalsIgnoreCase(request.getMethod())) {
         // Traitement de connexion
         String email = request.getParameter("email");
@@ -45,12 +47,24 @@
                              response.sendRedirect("index.jsp");
                              break;
                          case "employe":
-                             String employeQuery = "SELECT poste FROM employes WHERE idUtilisateur = ?";
+                             String employeQuery = "SELECT `idEmploye`,`prenom`, `nom`, `poste`, `dateEmbauche` FROM `employes` WHERE idUtilisateur = ?";
                              try (PreparedStatement empStmt = con.prepareStatement(employeQuery)) {
                                  empStmt.setInt(1, userId);
                                  try (ResultSet empRs = empStmt.executeQuery()) {
                                      if (empRs.next()) {
                                          String poste = empRs.getString("poste").toLowerCase();
+                                         String idEmploye = empRs.getString("idEmploye");
+                                         String prenom = empRs.getString("prenom");
+                                         String nom = empRs.getString("nom");
+                                         String dateEmbauche = empRs.getString("dateEmbauche");
+                                         
+                                         //session
+					                       session.setAttribute("poste", poste);
+					                       session.setAttribute("idEmploye", idEmploye);
+					                       session.setAttribute("prenom", prenom);
+					                       session.setAttribute("nom", nom);
+					                       session.setAttribute("dateEmbauche", dateEmbauche);
+					                       
                                          if (poste.contains("caisse")) response.sendRedirect("job-views/caisse/");
                                          else if (poste.contains("stock")) response.sendRedirect("job-views/stock/");
                                          else if (poste.contains("rh")) response.sendRedirect("job-views/rh/");
